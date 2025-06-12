@@ -42,7 +42,7 @@ ManusOdoo -roto es una plataforma avanzada de gestión empresarial que integra O
 - **PostgreSQL:**
   - Imagen: postgres:15
   - Puerto host: 5434 → contenedor: 5432
-  - Base de datos principal: odoo
+  - Base de datos principal: manus_odoo-bd
   - Usuario: odoo
   - Contraseña: odoo
 - **FastAPI:**
