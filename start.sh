@@ -118,16 +118,16 @@ if [ -f "package.json" ]; then
 fi
 
 # Iniciar API FastAPI en segundo plano
-if [ -f "main.py" ]; then
+if [ -f "main_new.py" ]; then
     print_status "Iniciando API FastAPI en puerto 8001..."
-    if pgrep -f "uvicorn main:app" > /dev/null; then
+    if pgrep -f "uvicorn main_new:app" > /dev/null; then
         print_warning "La API FastAPI ya está en ejecución"
     else
         source venv/bin/activate
-        nohup python3 -m uvicorn main:app --host 0.0.0.0 --port 8001 > uvicorn.log 2>&1 &
+        nohup python3 -m uvicorn main_new:app --host 0.0.0.0 --port 8000 > uvicorn.log 2>&1 &
         sleep 3
-        if pgrep -f "uvicorn main:app" > /dev/null; then
-            print_status "✅ API FastAPI iniciada en http://localhost:8001"
+        if pgrep -f "uvicorn main_new:app" > /dev/null; then
+            print_status "✅ API FastAPI iniciada en http://localhost:8000"
         else
             print_error "❌ Error al iniciar la API FastAPI. Revise uvicorn.log"
         fi
@@ -161,7 +161,7 @@ echo ""
 echo "📋 Servicios disponibles:"
 echo "   🏢 Odoo ERP: http://localhost:8070"
 echo "   🗄️  PostgreSQL: localhost:5434"
-echo "   🔌 API FastAPI: http://localhost:8001"
+echo "   🔌 API FastAPI: http://localhost:8000"
 echo "   🛠️  Adminer: http://localhost:8080"
 if [ "$1" = "--with-frontend" ]; then
     echo "   🖥️  Frontend: http://localhost:3001"

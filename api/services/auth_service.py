@@ -60,8 +60,7 @@ class AuthService:
         encoded_jwt = jwt.encode(to_encode, config.SECRET_KEY, algorithm=config.ALGORITHM)
         return encoded_jwt
     
-    @classmethod
-    async def get_current_user(cls, token: str = Depends(oauth2_scheme)) -> UserInDB:
+    async def get_current_user(self, token: str = Depends(oauth2_scheme)) -> UserInDB:
         """Obtiene el usuario actual desde el token"""
         credentials_exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -76,13 +75,12 @@ class AuthService:
             token_data = TokenData(username=username)
         except jwt.PyJWTError:
             raise credentials_exception
-        user = cls.get_user(fake_users_db, username=token_data.username)
+        user = self.get_user(fake_users_db, username=token_data.username)
         if user is None:
             raise credentials_exception
         return user
     
-    @classmethod
-    async def get_current_active_user(cls, current_user: User = Depends(get_current_user)) -> User:
+    async def get_current_active_user(self, current_user: User = Depends(lambda: auth_service.get_current_user)) -> User:
         """Obtiene el usuario actual activo"""
         if current_user.disabled:
             raise HTTPException(status_code=400, detail="Inactive user")

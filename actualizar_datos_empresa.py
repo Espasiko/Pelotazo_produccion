@@ -8,7 +8,7 @@ import xmlrpc.client
 
 # CONFIGURACIÓN: AJUSTA ESTOS DATOS SEGÚN TU INSTANCIA
 ODOO_URL = "http://localhost:8070"  # Cambia el puerto si es necesario
-ODOO_DB = "odoo"                    # Nombre de la base de datos
+ODOO_DB = "manus_odoo-bd"           # Nombre de la base de datos
 ODOO_USER = "admin"                 # Usuario admin
 ODOO_PASSWORD = "admin"             # Contraseña admin
 

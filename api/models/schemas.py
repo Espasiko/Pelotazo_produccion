@@ -1,6 +1,8 @@
 from pydantic import BaseModel
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Generic, TypeVar
 from datetime import datetime
+
+T = TypeVar('T')
 
 # Modelos de autenticación
 class User(BaseModel):
@@ -48,19 +50,25 @@ class ProductUpdate(BaseModel):
 class InventoryItem(BaseModel):
     id: int
     product_id: int
-    product: str
-    code: str
-    location: str
+    product_name: str
     quantity: int
-    reserved: int
+    location: str
+    last_updated: str
+    code: Optional[str] = None
+    reserved: Optional[int] = None
 
 class Sale(BaseModel):
     id: int
-    reference: str
-    customer: str
-    date: str
+    customer_id: int
+    customer_name: str
+    product_id: int
+    product_name: str
+    quantity: int
+    unit_price: float
     total: float
+    date: str
     status: str
+    reference: Optional[str] = None
 
 class SaleCreate(BaseModel):
     reference: str
@@ -74,9 +82,11 @@ class Customer(BaseModel):
     name: str
     email: str
     phone: str
-    city: str
-    country: str
-    status: str
+    address: str
+    total_purchases: float
+    city: Optional[str] = None
+    country: Optional[str] = None
+    status: Optional[str] = "Activo"
 
 class CustomerCreate(BaseModel):
     name: str
@@ -131,8 +141,8 @@ class PaginationParams(BaseModel):
     page: int = 1
     size: int = 10
     
-class PaginatedResponse(BaseModel):
-    items: List[Any]
+class PaginatedResponse(BaseModel, Generic[T]):
+    data: List[T]
     total: int
     page: int
     size: int

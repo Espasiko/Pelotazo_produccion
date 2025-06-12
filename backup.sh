@@ -31,7 +31,7 @@ print_info() {
 BACKUP_DIR="backups"
 DATE=$(date +%Y%m%d_%H%M%S)
 PROJECT_BACKUP="${BACKUP_DIR}/manusodoo_project_${DATE}.tar.gz"
-DB_BACKUP="${BACKUP_DIR}/manusodoo_database_${DATE}.sql"
+DB_BACKUP="${BACKUP_DIR}/manus_odoo-bd_backup_${DATE}.sql"
 VOLUMES_BACKUP="${BACKUP_DIR}/manusodoo_volumes_${DATE}.tar.gz"
 
 # Crear directorio de backups

@@ -2,7 +2,7 @@
     "mcpServers": {
       "postgres": {
         "command": "npx",
-        "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://odoo:odoo@localhost:5433/pelotazo"],
+        "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://odoo:odoo@localhost:5434/manus_odoo-bd"],
         "env": {}
       },
       "sqlite": {

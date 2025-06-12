@@ -16,8 +16,8 @@ logger = logging.getLogger(__name__)
 
 # Configuración de Odoo
 ODOO_CONFIG = {
-    'url': 'http://localhost:8069',
-    'db': 'manusodoo',
+    'url': 'http://localhost:8070',
+    'db': 'manus_odoo-bd',
     'username': 'admin',
     'password': 'admin'
 }

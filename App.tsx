@@ -35,7 +35,7 @@ const { Content } = Layout;
 
 const App: React.FC = () => {
   // URL base para la API de Odoo (se configurará en la fase de integración)
-  const API_URL = import.meta.env.VITE_ODOO_URL || "http://localhost:8069";
+  const API_URL = import.meta.env.VITE_ODOO_URL || "http://localhost:8070";
 
   return (
     <Router>

@@ -374,10 +374,10 @@ def main():
     """
     # Configuración de conexión a Odoo
     ODOO_CONFIG = {
-        'url': 'http://localhost:8069',
-        'db': 'pelotazo',  # Cambiar por el nombre de tu base de datos
-        'username': 'admin',  # Cambiar por tu usuario
-        'password': 'admin'   # Cambiar por tu contraseña
+        'url': 'http://localhost:8070',
+        'db': 'manus_odoo-bd',  # Base de datos configurada
+        'username': 'admin',  # Usuario administrador
+        'password': 'admin'   # Contraseña administrador
     }
     
     try:

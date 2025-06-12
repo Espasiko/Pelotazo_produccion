@@ -1,8 +1,8 @@
 import xmlrpc.client
 
 # Configuración de conexión a Odoo
-url = 'http://localhost:8069'
-db = 'pelotazo'
+url = 'http://localhost:8070'
+db = 'manus_odoo-bd'
 username = 'admin'
 password = 'admin'
 

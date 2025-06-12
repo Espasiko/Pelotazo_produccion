@@ -29,8 +29,8 @@ logger = logging.getLogger(__name__)
 
 # Configuración de conexión a Odoo
 ODOO_CONFIG = {
-    'url': 'http://localhost:8069',
-    'db': 'pelotazo',
+    'url': 'http://localhost:8070',
+    'db': 'manus_odoo-bd',
     'username': 'admin',
     'password': 'admin'
 }
@@ -576,10 +576,10 @@ class ImportadorProductosOdoo:
         logger.info(f"Total procesado: {sum(estadisticas.values())}")
     
     def actualizar_lista_proveedores_api(self):
-        """Actualiza la lista de proveedores en el archivo main.py"""
+        """Actualiza la lista de proveedores en el archivo main_new.py"""
         try:
-            # Leer archivo main.py
-            with open('main.py', 'r', encoding='utf-8') as f:
+            # Leer archivo main_new.py
+            with open('main_new.py', 'r', encoding='utf-8') as f:
                 contenido = f.read()
             
             # Crear nueva lista de proveedores basada en los datos reales
@@ -608,10 +608,10 @@ class ImportadorProductosOdoo:
             )
             
             # Escribir archivo actualizado
-            with open('main.py', 'w', encoding='utf-8') as f:
+            with open('main_new.py', 'w', encoding='utf-8') as f:
                 f.write(contenido_actualizado)
             
-            logger.info("Lista de proveedores actualizada en main.py")
+            logger.info("Lista de proveedores actualizada en main_new.py")
             
         except Exception as e:
             logger.error(f"Error actualizando lista de proveedores: {e}")

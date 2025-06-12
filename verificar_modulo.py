@@ -6,8 +6,8 @@ import os
 import sys
 
 # Configuración de Odoo
-url = 'http://localhost:8069'
-db = 'pelotazo'  # Cambiado de 'manusodoo' a 'pelotazo'
+url = 'http://localhost:8070'
+db = 'manus_odoo-bd'  # Base de datos configurada
 username = 'admin'
 password = 'admin'
 
