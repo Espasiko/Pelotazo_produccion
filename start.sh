@@ -45,12 +45,12 @@ if ! docker info &> /dev/null; then
 fi
 
 # Verificar si los contenedores ya están ejecutándose
-if docker ps | grep -q "manusodoo-roto_odoo_1\|manusodoo-roto_db_1\|manusodoo-roto_adminer_1"; then
+if docker ps | grep -q "manusodoo-roto_odoo_1\|manusodoo-roto_db_1\|manusodoo-roto_adminer_1\|manusodoo-roto_fastapi_1"; then
     print_warning "Los contenedores ya están ejecutándose"
     docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep -E "NAMES|manusodoo-roto_"
 else
-    # Iniciar contenedores Docker
-    print_status "Iniciando contenedores Odoo, PostgreSQL y Adminer..."
+    # Iniciar todos los contenedores Docker (incluyendo FastAPI)
+    print_status "Iniciando contenedores Odoo, PostgreSQL, Adminer y FastAPI..."
     docker-compose up -d
     
     if [ $? -ne 0 ]; then
@@ -117,22 +117,7 @@ if [ -f "package.json" ]; then
     fi
 fi
 
-# Iniciar API FastAPI en segundo plano
-if [ -f "main_new.py" ]; then
-    print_status "Iniciando API FastAPI en puerto 8001..."
-    if pgrep -f "uvicorn main_new:app" > /dev/null; then
-        print_warning "La API FastAPI ya está en ejecución"
-    else
-        source venv/bin/activate
-        nohup python3 -m uvicorn main_new:app --host 0.0.0.0 --port 8000 > uvicorn.log 2>&1 &
-        sleep 3
-        if pgrep -f "uvicorn main_new:app" > /dev/null; then
-            print_status "✅ API FastAPI iniciada en http://localhost:8000"
-        else
-            print_error "❌ Error al iniciar la API FastAPI. Revise uvicorn.log"
-        fi
-    fi
-fi
+# FastAPI ahora se inicia automáticamente como contenedor Docker (servicio fastapi en docker-compose.yml)
 
 # Iniciar frontend en modo desarrollo si se especifica
 if [ "$1" = "--with-frontend" ]; then
@@ -161,7 +146,7 @@ echo ""
 echo "📋 Servicios disponibles:"
 echo "   🏢 Odoo ERP: http://localhost:8070"
 echo "   🗄️  PostgreSQL: localhost:5434"
-echo "   🔌 API FastAPI: http://localhost:8000"
+echo "   🔌 API FastAPI: http://localhost:8000 (contenedor Docker)"
 echo "   🛠️  Adminer: http://localhost:8080"
 if [ "$1" = "--with-frontend" ]; then
     echo "   🖥️  Frontend: http://localhost:3001"

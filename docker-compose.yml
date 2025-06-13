@@ -39,6 +39,24 @@ services:
     depends_on:
       - db
 
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile.fastapi
+    container_name: fastapi
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app
+    depends_on:
+      - db
+    environment:
+      ODOO_URL: "http://odoo:8070"
+      ODOO_DB: "manus_odoo-bd"
+      ODOO_USERNAME: "yo@mail.com"
+      ODOO_PASSWORD: "admin"
+
 volumes:
   odoo-web-data:
   odoo-db-data:

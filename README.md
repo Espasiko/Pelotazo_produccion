@@ -153,7 +153,7 @@ Para adaptar el sistema a sus necesidades específicas, puede modificar:
 ```
 
 ### 4. Acceder al sistema
-- **Odoo Backend**: http://localhost:8069
+- **Odoo Backend**: http://localhost:8070
 - **Dashboard**: http://localhost:5173 (en desarrollo)
 
 ## 📁 Estructura del Proyecto
@@ -398,7 +398,7 @@ docker-compose logs
 #### 2. Dashboard no conecta con Odoo
 ```bash
 # Verificar que Odoo esté ejecutándose
-curl http://localhost:8069
+curl http://localhost:8070
 
 # Verificar configuración
 cat .env
@@ -416,7 +416,7 @@ sudo usermod -aG docker $USER
 #### 4. Puerto ocupado
 ```bash
 # Verificar puertos en uso
-sudo netstat -tlnp | grep :8069
+sudo netstat -tlnp | grep :80670
 sudo netstat -tlnp | grep :5173
 
 # Cambiar puertos en docker-compose.yml si es necesario
