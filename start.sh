@@ -45,18 +45,54 @@ if ! docker info &> /dev/null; then
 fi
 
 # Verificar si los contenedores ya están ejecutándose
-if docker ps | grep -q "manusodoo-roto_odoo_1\|manusodoo-roto_db_1\|manusodoo-roto_adminer_1\|manusodoo-roto_fastapi_1"; then
-    print_warning "Los contenedores ya están ejecutándose"
-    docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep -E "NAMES|manusodoo-roto_"
+if docker ps | grep -q "manusodoo-roto_odoo_1\|manusodoo-roto_db_1\|manusodoo-roto_adminer_1"; then
+    print_warning "Algunos contenedores ya están ejecutándose"
+    docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep -E "NAMES|manusodoo-roto_|fastapi"
 else
-    # Iniciar todos los contenedores Docker (incluyendo FastAPI)
-    print_status "Iniciando contenedores Odoo, PostgreSQL, Adminer y FastAPI..."
-    docker-compose up -d
+    # Iniciar contenedores principales (Odoo, PostgreSQL, Adminer)
+    print_status "Iniciando contenedores Odoo, PostgreSQL y Adminer..."
+    docker-compose up -d db odoo adminer
     
     if [ $? -ne 0 ]; then
-        print_error "Error al iniciar los contenedores"
+        print_error "Error al iniciar los contenedores principales"
         exit 1
     fi
+fi
+
+# Verificar y construir FastAPI si es necesario
+print_status "Verificando contenedor FastAPI..."
+if ! docker ps | grep -q "fastapi"; then
+    # Eliminar contenedor FastAPI anterior si existe
+    docker rm -f fastapi 2>/dev/null || true
+    
+    # Construir imagen FastAPI
+    print_status "Construyendo imagen FastAPI..."
+    docker build -f Dockerfile.fastapi -t manusodoo-roto_fastapi:latest .
+    
+    if [ $? -ne 0 ]; then
+        print_error "Error al construir la imagen FastAPI"
+        exit 1
+    fi
+    
+    # Iniciar contenedor FastAPI
+    print_status "Iniciando contenedor FastAPI..."
+    docker run -d --name fastapi \
+        --network manusodoo-roto_default \
+        -p 8000:8000 \
+        -v "$(pwd):/app" \
+        -e ODOO_URL="http://odoo:8070" \
+        -e ODOO_DB="manus_odoo-bd" \
+        -e ODOO_USERNAME="yo@mail.com" \
+        -e ODOO_PASSWORD="admin" \
+        --restart unless-stopped \
+        manusodoo-roto_fastapi:latest
+    
+    if [ $? -ne 0 ]; then
+        print_error "Error al iniciar el contenedor FastAPI"
+        exit 1
+    fi
+else
+    print_status "✅ Contenedor FastAPI ya está ejecutándose"
 fi
 
 # Esperar a que PostgreSQL esté listo
@@ -92,6 +128,23 @@ while ! curl -s http://localhost:8070 > /dev/null; do
 done
 echo ""
 print_status "✅ Odoo está ejecutándose"
+
+# Esperar a que FastAPI esté listo
+print_status "Esperando a que FastAPI esté disponible..."
+retries=0
+max_retries=15
+while ! curl -s http://localhost:8000/docs > /dev/null; do
+    echo -n "."
+    sleep 3
+    retries=$((retries + 1))
+    if [ $retries -ge $max_retries ]; then
+        print_error "Timeout esperando a FastAPI. Verificando logs..."
+        docker logs --tail 20 fastapi
+        exit 1
+    fi
+done
+echo ""
+print_status "✅ FastAPI está ejecutándose"
 
 # Configurar entorno Python para middleware (si es necesario)
 if [ -f "requirements.txt" ]; then
@@ -138,7 +191,8 @@ fi
 # Mostrar estado del sistema
 echo ""
 print_info "=== Estado del Sistema ==="
-docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep -E "NAMES|manusodoo-roto_"
+echo "Contenedores en ejecución:"
+docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep -E "NAMES|manusodoo-roto_|fastapi"
 
 echo ""
 print_status "🎉 Sistema iniciado correctamente"
@@ -161,5 +215,5 @@ echo "   ./stop.sh                  - Detener todos los servicios"
 echo "   ./backup.sh                - Crear backup del sistema"
 echo "   docker logs manusodoo-roto_odoo_1    - Ver logs de Odoo"
 echo "   docker logs manusodoo-roto_db_1      - Ver logs de PostgreSQL"
-echo "   cat uvicorn.log            - Ver logs de FastAPI"
+echo "   docker logs fastapi                  - Ver logs de FastAPI"
 echo ""
