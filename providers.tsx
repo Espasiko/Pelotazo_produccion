@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Card, Typography, Space, Button, Tag, Form, Input, Select, Modal, message } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined, TeamOutlined } from '@ant-design/icons';
-import { odooService, Provider } from './odooService';
+import { odooService, Provider } from './src/services/odooService';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -22,19 +22,11 @@ const Providers: React.FC = () => {
   const fetchProviders = async () => {
     try {
       setLoading(true);
-      // Obtener datos de Odoo
-      const providersData = await odooService.getProviders();
-      
-      if (providersData && providersData.length > 0) {
-        setProviders(providersData);
-      } else {
-        setProviders([]);
-        message.error('No se pudieron obtener proveedores del backend.');
-      }
+      const data = await odooService.getProviders();
+      setProviders(data);
     } catch (error) {
       console.error('Error fetching providers:', error);
-      message.error('Error al cargar los proveedores');
-      setProviders([]);
+      message.error('Error al cargar proveedores');
     } finally {
       setLoading(false);
     }
@@ -102,13 +94,9 @@ const Providers: React.FC = () => {
       cancelText: 'Cancelar',
       onOk: async () => {
         try {
-          const success = await odooService.deleteProvider(id);
-          if (success) {
-            setProviders(providers.filter(p => p.id !== id));
-            message.success('Proveedor eliminado correctamente');
-          } else {
-            throw new Error('Error al eliminar el proveedor');
-          }
+          await odooService.deleteProvider(id);
+          setProviders(providers.filter(p => p.id !== id));
+          message.success('Proveedor eliminado correctamente');
         } catch (error) {
           console.error('Error deleting provider:', error);
           message.error('Error al eliminar el proveedor');

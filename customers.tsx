@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Card, Typography, Space, Button, Tag } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { odooService, Customer } from './odooService';
+import { odooService, Customer } from './src/services/odooService';
 
 const { Title } = Typography;
 
@@ -12,8 +12,8 @@ const Customers: React.FC = () => {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const customersData = await odooService.getCustomers();
-        setCustomers(customersData);
+        const customersData = await odooService.getCustomers({ page: 1, limit: 100 });
+        setCustomers(customersData.data);
       } catch (error) {
         console.error('Error fetching customers:', error);
         // Fallback to default data if API fails
@@ -23,45 +23,40 @@ const Customers: React.FC = () => {
             name: 'María García',
             email: 'maria.garcia@example.com',
             phone: '+34 612 345 678',
-            city: 'Madrid',
-            country: 'España',
-            status: 'Activo',
+            address: 'Madrid',
+            total_purchases: 1250.50,
           },
           {
             id: 2,
             name: 'Juan Pérez',
             email: 'juan.perez@example.com',
             phone: '+34 623 456 789',
-            city: 'Barcelona',
-            country: 'España',
-            status: 'Activo',
+            address: 'Barcelona',
+            total_purchases: 890.25,
           },
           {
             id: 3,
             name: 'Ana Martínez',
             email: 'ana.martinez@example.com',
             phone: '+34 634 567 890',
-            city: 'Valencia',
-            country: 'España',
-            status: 'Inactivo',
+            address: 'Valencia',
+            total_purchases: 0,
           },
           {
             id: 4,
             name: 'Carlos Rodríguez',
             email: 'carlos.rodriguez@example.com',
             phone: '+34 645 678 901',
-            city: 'Sevilla',
-            country: 'España',
-            status: 'Activo',
+            address: 'Sevilla',
+            total_purchases: 2100.75,
           },
           {
             id: 5,
             name: 'Laura Sánchez',
             email: 'laura.sanchez@example.com',
             phone: '+34 656 789 012',
-            city: 'Bilbao',
-            country: 'España',
-            status: 'Activo',
+            address: 'Bilbao',
+            total_purchases: 567.30,
           },
         ]);
       } finally {
@@ -89,23 +84,15 @@ const Customers: React.FC = () => {
       key: 'phone',
     },
     {
-      title: 'Ciudad',
-      dataIndex: 'city',
-      key: 'city',
+      title: 'Dirección',
+      dataIndex: 'address',
+      key: 'address',
     },
     {
-      title: 'País',
-      dataIndex: 'country',
-      key: 'country',
-    },
-    {
-      title: 'Estado',
-      dataIndex: 'status',
-      key: 'status',
-      render: (status: string) => {
-        const color = status === 'Activo' ? 'green' : 'red';
-        return <Tag color={color}>{status}</Tag>;
-      },
+      title: 'Total Compras',
+      dataIndex: 'total_purchases',
+      key: 'total_purchases',
+      render: (value: number) => `€${value.toFixed(2)}`,
     },
     {
       title: 'Acciones',

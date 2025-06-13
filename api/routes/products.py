@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import List, Optional
 
-from ..models.schemas import Product, User, PaginatedResponse
+from ..models.schemas import Product, User, PaginatedResponse, ProductCreate
 from ..services.auth_service import auth_service
 from ..services.odoo_service import odoo_service
 from ..utils.config import config
@@ -53,14 +53,20 @@ async def get_product(
 
 @router.post("/products", response_model=Product)
 async def create_product(
-    product: Product,
+    product: ProductCreate,  # Cambiado de Product a ProductCreate
     current_user: User = Depends(auth_service.get_current_active_user)
 ):
     """Crea un nuevo producto (simulado)"""
-    # Por ahora retornamos el producto con un ID simulado
-    # En una implementación real, se crearía en Odoo
-    product.id = 999  # ID simulado
-    return product
+    # En una implementación real, se crearía en Odoo y se devolvería el producto completo
+    # Por ahora, simulamos la creación y devolvemos un objeto Product con un ID
+    # Asumiendo que odoo_service.create_product(product) devuelve el producto creado con su ID
+    product_created = odoo_service.create_product(product)
+    if not product_created:
+        raise HTTPException(status_code=500, detail="Error al crear el producto en Odoo")
+    return product_created
+
+    # Simulación anterior:
+    # return Product(id=999, name=product.name, code=product.code, category=product.category, price=product.price, stock_quantity=product.stock, image_url=product.image_url, is_active=True)
 
 @router.put("/products/{product_id}", response_model=Product)
 async def update_product(

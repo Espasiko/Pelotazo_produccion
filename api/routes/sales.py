@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import List
+from fastapi import APIRouter, Depends, HTTPException, Query
+from datetime import datetime
 
 from ..models.schemas import Sale, User, PaginatedResponse
 from ..services.auth_service import auth_service
@@ -8,11 +9,11 @@ router = APIRouter(prefix="/api/v1", tags=["sales"])
 
 # Datos simulados de ventas
 fake_sales_db = [
-    Sale(id=1, customer_id=1, customer_name="Juan Pérez", product_id=1, product_name="Refrigerador Samsung RT38K5982BS", quantity=1, unit_price=899.99, total=899.99, date="2024-01-15", status="completed"),
-    Sale(id=2, customer_id=2, customer_name="María García", product_id=2, product_name="Lavadora LG F4WV5012S0W", quantity=1, unit_price=649.99, total=649.99, date="2024-01-14", status="completed"),
-    Sale(id=3, customer_id=3, customer_name="Carlos López", product_id=3, product_name="Televisor Sony KD-55X80J", quantity=2, unit_price=799.99, total=1599.98, date="2024-01-13", status="pending"),
-    Sale(id=4, customer_id=1, customer_name="Juan Pérez", product_id=2, product_name="Lavadora LG F4WV5012S0W", quantity=1, unit_price=649.99, total=649.99, date="2024-01-12", status="completed"),
-    Sale(id=5, customer_id=4, customer_name="Ana Martínez", product_id=1, product_name="Refrigerador Samsung RT38K5982BS", quantity=1, unit_price=899.99, total=899.99, date="2024-01-11", status="cancelled"),
+    Sale(id=1, partner_id=1, customer_id=1, customer_name="Juan Pérez", product_id=1, product_name="Refrigerador Samsung RT38K5982BS", quantity=1, unit_price=899.99, total=899.99, total_amount=899.99, date=datetime(2024, 1, 15), status="completed"),
+    Sale(id=2, partner_id=2, customer_id=2, customer_name="María García", product_id=2, product_name="Lavadora LG F4WV5012S0W", quantity=1, unit_price=649.99, total=649.99, total_amount=649.99, date=datetime(2024, 1, 14), status="completed"),
+    Sale(id=3, partner_id=3, customer_id=3, customer_name="Carlos López", product_id=3, product_name="Televisor Sony KD-55X80J", quantity=2, unit_price=799.99, total=1599.98, total_amount=1599.98, date=datetime(2024, 1, 13), status="pending"),
+    Sale(id=4, partner_id=1, customer_id=1, customer_name="Juan Pérez", product_id=2, product_name="Lavadora LG F4WV5012S0W", quantity=1, unit_price=649.99, total=649.99, total_amount=649.99, date=datetime(2024, 1, 12), status="completed"),
+    Sale(id=5, partner_id=4, customer_id=4, customer_name="Ana Martínez", product_id=1, product_name="Refrigerador Samsung RT38K5982BS", quantity=1, unit_price=899.99, total=899.99, total_amount=899.99, date=datetime(2024, 1, 11), status="cancelled"),
 ]
 
 @router.get("/sales", response_model=PaginatedResponse[Sale])

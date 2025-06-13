@@ -80,11 +80,27 @@ class AuthService:
             raise credentials_exception
         return user
     
-    async def get_current_active_user(self, current_user: User = Depends(lambda: auth_service.get_current_user)) -> User:
+    async def get_current_active_user(self, token: str = Depends(oauth2_scheme)) -> User:
         """Obtiene el usuario actual activo"""
-        if current_user.disabled:
+        credentials_exception = HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+        try:
+            payload = jwt.decode(token, config.SECRET_KEY, algorithms=[config.ALGORITHM])
+            username: str = payload.get("sub")
+            if username is None:
+                raise credentials_exception
+            token_data = TokenData(username=username)
+        except jwt.PyJWTError:
+            raise credentials_exception
+        user = self.get_user(fake_users_db, username=token_data.username)
+        if user is None:
+            raise credentials_exception
+        if user.disabled:
             raise HTTPException(status_code=400, detail="Inactive user")
-        return current_user
+        return user
     
     @staticmethod
     def generate_session_id() -> str:

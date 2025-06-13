@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import OdooClient from './odooClient';
-import { odooService } from './odooService';
+import OdooClient from './src/services/odooClient';
+import { odooService } from './src/services/odooService';
 
 interface OdooContextType {
   client: OdooClient;

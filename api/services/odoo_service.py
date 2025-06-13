@@ -2,7 +2,7 @@ import xmlrpc.client
 import gc
 from typing import List, Optional, Dict, Any
 from ..utils.config import config
-from ..models.schemas import Product, Provider, Customer, Sale
+from ..models.schemas import Product, Provider, Customer, Sale, ProductCreate
 
 class OdooService:
     """Servicio para interactuar con Odoo via XML-RPC"""
@@ -184,6 +184,88 @@ class OdooService:
             print(f"Error obteniendo proveedores: {e}")
             return self._get_fallback_providers()
         finally:
+            self._cleanup_connection()
+
+    def create_product(self, product_data: ProductCreate) -> Optional[Product]:
+        """Crea un nuevo producto en Odoo."""
+        try:
+            print("ODOO_SERVICE: Iniciando create_product")
+            if not self._get_connection():
+                print("ODOO_SERVICE: Error de conexión inicial a Odoo")
+                return None
+
+            # Buscar o crear la categoría del producto
+            category_name = product_data.category
+            print(f"ODOO_SERVICE: Buscando categoría '{category_name}'")
+            category_ids = self._execute_kw('product.category', 'search', [[('name', '=', category_name)]])
+            print(f"ODOO_SERVICE: Resultado búsqueda categoría: {category_ids}")
+            if not category_ids:
+                # Crear la categoría si no existe
+                print(f"ODOO_SERVICE: Categoría '{category_name}' no encontrada, creando...")
+                new_category_id = self._execute_kw('product.category', 'create', [{'name': category_name}])
+                print(f"ODOO_SERVICE: Resultado creación categoría: {new_category_id}")
+                if not new_category_id:
+                    print(f"Error creando categoría '{category_name}' en Odoo.")
+                    return None
+                category_id = new_category_id
+            else:
+                category_id = category_ids[0]
+
+            # Preparar datos para Odoo
+            odoo_product_values = {
+                'name': product_data.name,
+                'default_code': product_data.code,
+                'list_price': product_data.price,
+                'standard_price': product_data.price, # Coste, se puede ajustar
+                'categ_id': category_id,
+                'type': 'product',  # 'consu' para consumible, 'service' para servicio
+                'qty_available': product_data.stock, # Esto normalmente se maneja con movimientos de stock
+                'sale_ok': True,
+                'purchase_ok': True,
+                # 'image_1920': product_data.image_url, # Si tienes la imagen en base64
+            }
+
+            # Crear el producto en Odoo
+            print(f"ODOO_SERVICE: Creando producto en Odoo con valores: {odoo_product_values}")
+            product_id = self._execute_kw('product.template', 'create', [odoo_product_values])
+            print(f"ODOO_SERVICE: Resultado creación producto (ID): {product_id}")
+            if not product_id:
+                print(f"Error creando producto '{product_data.name}' en Odoo.")
+                return None
+
+            # Leer el producto creado para devolverlo
+            print(f"ODOO_SERVICE: Leyendo producto creado con ID: {product_id}")
+            created_product_data = self._execute_kw(
+                'product.template',
+                'read',
+                [[product_id]],
+                {'fields': ['id', 'name', 'default_code', 'categ_id', 'list_price', 'qty_available']}
+            )
+            if not created_product_data:
+                print(f"ODOO_SERVICE: Error leyendo producto creado con ID: {product_id}")
+                return None
+            print(f"ODOO_SERVICE: Datos producto leído: {created_product_data}")
+            
+            p = created_product_data[0]
+            # Obtener el nombre de la categoría del producto creado
+            created_category_name = self._get_category_name(p.get('categ_id'))
+
+            return Product(
+                id=p['id'],
+                name=p['name'],
+                code=p.get('default_code', '') or f"PROD-{p['id']}",
+                category=created_category_name,
+                price=p.get('list_price', 0.0),
+                stock=int(p.get('qty_available', 0)), # qty_available en product.template puede no ser lo mismo que stock real
+                image_url=f"/web/image/product.template/{p['id']}/image_1920/" if p.get('image_1920') else None,
+                is_active=True # Asumimos que si se crea, está activo
+            )
+
+        except Exception as e:
+            print(f"ODOO_SERVICE: Excepción en create_product: {e}")
+            return None
+        finally:
+            print("ODOO_SERVICE: Finalizando create_product y limpiando conexión")
             self._cleanup_connection()
     
     def _get_category_name(self, categ_id) -> str:

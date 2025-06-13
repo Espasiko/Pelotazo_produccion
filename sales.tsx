@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Card, Typography, Space, Button, Tag } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { odooService, Sale } from './odooService';
+import { odooService, Sale } from './src/services/odooService';
 
 const { Title } = Typography;
 
@@ -12,50 +12,70 @@ const Sales: React.FC = () => {
   useEffect(() => {
     const fetchSales = async () => {
       try {
-        const salesData = await odooService.getSales();
-        setSales(salesData);
+        const salesResponse = await odooService.getSales({ page: 1, limit: 100 });
+        setSales(salesResponse.data);
       } catch (error) {
         console.error('Error fetching sales:', error);
         // Fallback to default data if API fails
         setSales([
           {
             id: 1,
-            reference: 'S00123',
-            customer: 'María García',
-            date: '2025-05-20',
+            customer_id: 1,
+            customer_name: 'María García',
+            product_id: 1,
+            product_name: 'Producto A',
+            quantity: 2,
+            unit_price: 649.99,
             total: 1299.99,
+            date: '2025-05-20',
             status: 'Completado',
           },
           {
             id: 2,
-            reference: 'S00124',
-            customer: 'Juan Pérez',
-            date: '2025-05-21',
+            customer_id: 2,
+            customer_name: 'Juan Pérez',
+            product_id: 2,
+            product_name: 'Producto B',
+            quantity: 1,
+            unit_price: 849.50,
             total: 849.50,
+            date: '2025-05-21',
             status: 'Pendiente',
           },
           {
             id: 3,
-            reference: 'S00125',
-            customer: 'Ana Martínez',
-            date: '2025-05-22',
+            customer_id: 3,
+            customer_name: 'Ana Martínez',
+            product_id: 3,
+            product_name: 'Producto C',
+            quantity: 1,
+            unit_price: 1599.99,
             total: 1599.99,
+            date: '2025-05-22',
             status: 'Completado',
           },
           {
             id: 4,
-            reference: 'S00126',
-            customer: 'Carlos Rodríguez',
-            date: '2025-05-23',
+            customer_id: 4,
+            customer_name: 'Carlos Rodríguez',
+            product_id: 4,
+            product_name: 'Producto D',
+            quantity: 1,
+            unit_price: 399.99,
             total: 399.99,
+            date: '2025-05-23',
             status: 'Cancelado',
           },
           {
             id: 5,
-            reference: 'S00127',
-            customer: 'Laura Sánchez',
-            date: '2025-05-24',
+            customer_id: 5,
+            customer_name: 'Laura Sánchez',
+            product_id: 5,
+            product_name: 'Producto E',
+            quantity: 1,
+            unit_price: 749.99,
             total: 749.99,
+            date: '2025-05-24',
             status: 'Pendiente',
           },
         ]);
@@ -69,25 +89,41 @@ const Sales: React.FC = () => {
 
   const columns = [
     {
-      title: 'Referencia',
-      dataIndex: 'reference',
-      key: 'reference',
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
     },
     {
       title: 'Cliente',
-      dataIndex: 'customer',
-      key: 'customer',
+      dataIndex: 'customer_name',
+      key: 'customer_name',
     },
     {
-      title: 'Fecha',
-      dataIndex: 'date',
-      key: 'date',
+      title: 'Producto',
+      dataIndex: 'product_name',
+      key: 'product_name',
+    },
+    {
+      title: 'Cantidad',
+      dataIndex: 'quantity',
+      key: 'quantity',
+    },
+    {
+      title: 'Precio Unitario',
+      dataIndex: 'unit_price',
+      key: 'unit_price',
+      render: (price: number) => `${price.toFixed(2)} €`,
     },
     {
       title: 'Total',
       dataIndex: 'total',
       key: 'total',
       render: (total: number) => `${total.toFixed(2)} €`,
+    },
+    {
+      title: 'Fecha',
+      dataIndex: 'date',
+      key: 'date',
     },
     {
       title: 'Estado',

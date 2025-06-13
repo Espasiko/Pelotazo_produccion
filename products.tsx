@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Card, Button, Tag, Space, Modal, Form, Input, InputNumber, Select, message } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { odooService } from './odooService';
+import { odooService } from './src/services/odooService';
 
 interface Product {
   id: number;
@@ -25,14 +25,13 @@ const Products: React.FC = () => {
   }, []);
 
   const fetchProducts = async () => {
-    setLoading(true);
     try {
+      setLoading(true);
       const data = await odooService.getProducts();
       setProducts(data);
     } catch (error) {
       console.error('Error fetching products:', error);
-      setProducts([]);
-      message.error('No se pudieron obtener productos del backend.');
+      message.error('Error al cargar productos');
     } finally {
       setLoading(false);
     }
@@ -94,13 +93,9 @@ const Products: React.FC = () => {
       cancelText: 'Cancelar',
       onOk: async () => {
         try {
-          const success = await odooService.deleteProduct(product.id);
-          if (success) {
-            setProducts(products.filter(p => p.id !== product.id));
-            message.success('Producto eliminado exitosamente');
-          } else {
-            message.error('Error al eliminar el producto');
-          }
+          await odooService.deleteProduct(product.id);
+          setProducts(products.filter(p => p.id !== product.id));
+          message.success('Producto eliminado exitosamente');
         } catch (error) {
           console.error('Error deleting product:', error);
           message.error('Error al eliminar el producto');

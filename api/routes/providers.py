@@ -34,6 +34,18 @@ async def get_providers(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error obteniendo proveedores: {str(e)}")
 
+@router.get("/providers/all", response_model=List[Provider])
+async def get_all_providers(
+    current_user: User = Depends(auth_service.get_current_active_user)
+):
+    """Obtiene todos los proveedores sin paginación"""
+    try:
+        # Obtener todos los proveedores desde Odoo
+        providers = odoo_service.get_providers()
+        return providers
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error obteniendo proveedores: {str(e)}")
+
 @router.get("/providers/{provider_id}", response_model=Provider)
 async def get_provider(
     provider_id: int,

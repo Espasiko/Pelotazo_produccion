@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import List
+from fastapi import APIRouter, Depends, HTTPException, Query
 
 from ..models.schemas import InventoryItem, User, PaginatedResponse
 from ..services.auth_service import auth_service
@@ -7,12 +7,14 @@ from ..services.auth_service import auth_service
 router = APIRouter(prefix="/api/v1", tags=["inventory"])
 
 # Datos simulados de inventario
+from datetime import datetime
+
 fake_inventory_db = [
-    InventoryItem(id=1, product_id=1, product_name="Refrigerador Samsung RT38K5982BS", quantity=12, location="Almacén A", last_updated="2024-01-15"),
-    InventoryItem(id=2, product_id=2, product_name="Lavadora LG F4WV5012S0W", quantity=8, location="Almacén A", last_updated="2024-01-14"),
-    InventoryItem(id=3, product_id=3, product_name="Televisor Sony KD-55X80J", quantity=5, location="Almacén B", last_updated="2024-01-13"),
-    InventoryItem(id=4, product_id=1, product_name="Refrigerador Samsung RT38K5982BS", quantity=3, location="Almacén B", last_updated="2024-01-12"),
-    InventoryItem(id=5, product_id=2, product_name="Lavadora LG F4WV5012S0W", quantity=15, location="Almacén C", last_updated="2024-01-11"),
+    InventoryItem(id=1, product_id=1, product_name="Refrigerador Samsung RT38K5982BS", quantity=12, location="Almacén A", last_updated=datetime(2024, 1, 15)),
+    InventoryItem(id=2, product_id=2, product_name="Lavadora LG F4WV5012S0W", quantity=8, location="Almacén A", last_updated=datetime(2024, 1, 14)),
+    InventoryItem(id=3, product_id=3, product_name="Televisor Sony KD-55X80J", quantity=5, location="Almacén B", last_updated=datetime(2024, 1, 13)),
+    InventoryItem(id=4, product_id=1, product_name="Refrigerador Samsung RT38K5982BS", quantity=3, location="Almacén B", last_updated=datetime(2024, 1, 12)),
+    InventoryItem(id=5, product_id=2, product_name="Lavadora LG F4WV5012S0W", quantity=15, location="Almacén C", last_updated=datetime(2024, 1, 11)),
 ]
 
 @router.get("/inventory", response_model=PaginatedResponse[InventoryItem])

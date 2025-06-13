@@ -2,7 +2,7 @@ import requests
 import json
 
 # Configuración de la API
-api_url = "http://localhost:8001"
+api_url = "http://localhost:8000"
 
 # Datos de autenticación
 auth_data = {
@@ -23,13 +23,14 @@ if response.status_code == 200:
         "Content-Type": "application/json"
     }
     
-    # Datos del producto a crear
+    # Datos del producto a crear (sin el campo 'id')
     product_data = {
         "name": "Producto API Test Final",
         "code": "API-TEST-FINAL-001",
         "category": "Pruebas",
         "price": 150.0,
         "stock": 10
+        # El campo 'id' no se envía, será asignado por el backend/Odoo
     }
     
     # Crear producto

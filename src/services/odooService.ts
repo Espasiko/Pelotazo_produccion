@@ -70,6 +70,7 @@ export interface DashboardStats {
   low_stock_products: number;
   monthly_revenue: number;
   top_selling_product: string;
+  topCategories: CategoryData[];
   recent_sales: Array<{
     id: number;
     customer_name: string;
@@ -129,7 +130,7 @@ class OdooService {
   private setupInterceptors(): void {
     // Interceptor de request - agregar token automáticamente
     this.apiClient.interceptors.request.use(
-      (config: AxiosRequestConfig) => {
+      (config: any) => {
         if (this.token && config.headers) {
           config.headers.Authorization = `Bearer ${this.token}`;
         }
@@ -182,9 +183,10 @@ class OdooService {
         }
         
         // Log de errores
+        const errorData = error.response?.data as any;
         console.error('❌ API Error:', {
           status: error.response?.status,
-          message: error.response?.data?.detail || error.message,
+          message: errorData?.detail || error.message,
           url: error.config?.url
         });
         
@@ -194,8 +196,9 @@ class OdooService {
   }
 
   private formatError(error: AxiosError): ApiError {
+    const errorData = error.response?.data as any;
     return {
-      message: error.response?.data?.detail || error.message || 'Error desconocido',
+      message: errorData?.detail || error.message || 'Error desconocido',
       status: error.response?.status || 500,
       details: error.response?.data
     };
@@ -281,7 +284,13 @@ class OdooService {
   }
 
   // Métodos de productos
-  async getProducts(params: { page: number; limit: number; search?: string }): Promise<PaginatedResponse<Product>> {
+  async getProducts(): Promise<Product[]>;
+  async getProducts(params: { page: number; limit: number; search?: string }): Promise<PaginatedResponse<Product>>;
+  async getProducts(params?: { page: number; limit: number; search?: string }): Promise<Product[] | PaginatedResponse<Product>> {
+    if (!params) {
+      const response = await this.apiClient.get<Product[]>('/api/v1/products/all');
+      return response.data;
+    }
     const response = await this.apiClient.get<PaginatedResponse<Product>>('/api/v1/products', {
       params
     });
@@ -303,12 +312,24 @@ class OdooService {
     return response.data;
   }
 
-  async deleteProduct(id: number): Promise<void> {
-    await this.apiClient.delete(`/api/v1/products/${id}`);
+  async deleteProduct(id: number): Promise<boolean> {
+    try {
+      await this.apiClient.delete(`/api/v1/products/${id}`);
+      return true;
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      return false;
+    }
   }
 
   // Métodos de proveedores
-  async getProviders(params: { page: number; limit: number; search?: string }): Promise<PaginatedResponse<Provider>> {
+  async getProviders(): Promise<Provider[]>;
+  async getProviders(params: { page: number; limit: number; search?: string }): Promise<PaginatedResponse<Provider>>;
+  async getProviders(params?: { page: number; limit: number; search?: string }): Promise<Provider[] | PaginatedResponse<Provider>> {
+    if (!params) {
+      const response = await this.apiClient.get<Provider[]>('/api/v1/providers/all');
+      return response.data;
+    }
     const response = await this.apiClient.get<PaginatedResponse<Provider>>('/api/v1/providers', {
       params
     });
@@ -330,8 +351,14 @@ class OdooService {
     return response.data;
   }
 
-  async deleteProvider(id: number): Promise<void> {
-    await this.apiClient.delete(`/api/v1/providers/${id}`);
+  async deleteProvider(id: number): Promise<boolean> {
+    try {
+      await this.apiClient.delete(`/api/v1/providers/${id}`);
+      return true;
+    } catch (error) {
+      console.error('Error deleting provider:', error);
+      return false;
+    }
   }
 
   // Métodos de inventario
