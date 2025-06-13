@@ -249,7 +249,7 @@ ODOO_DB_NAME=manus_odoo-bd
 
 # Configuración Dashboard
 VITE_ODOO_URL=http://localhost:8070
-VITE_API_URL=http://localhost:8001
+VITE_API_URL=http://localhost:8000
 VITE_APP_TITLE=ManusOdoo Dashboard
 VITE_COMPANY_NAME=El Pelotazo
 ```

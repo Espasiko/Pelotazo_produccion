@@ -89,7 +89,7 @@ Los principales módulos instalados incluyen:
 3. **Puertos Activos**: 
    - PostgreSQL: 5432
    - Odoo: 8070, 8080
-   - FastAPI: 8001
+   - FastAPI: 8000
 4. **Base de Datos Principal**: `odoo_pelotazo` parece ser la BD principal con "El Pelotazo Electrodomésticos"
 
 ## 🔐 CREDENCIALES DE ACCESO RÁPIDO
@@ -101,7 +101,7 @@ PGPASSWORD=odoo psql -h localhost -p 5432 -U odoo -d odoo_pelotazo
 # URLs de acceso
 http://localhost:8070/shop  # Tienda Odoo
 http://localhost:8080       # Odoo Backend
-http://localhost:8001       # FastAPI Backend
+http://localhost:8000       # FastAPI Backend
 ```
 
 ---

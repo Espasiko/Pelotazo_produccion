@@ -13,3 +13,14 @@ INFO:     Shutting down
 INFO:     Waiting for application shutdown.
 INFO:     Application shutdown complete.
 INFO:     Finished server process [378813]
+INFO:     Will watch for changes in these directories: ['/home/espasiko/mainmanusodoo/manusodoo-roto']
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     Started reloader process [117048] using StatReload
+INFO:     Started server process [117053]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [117053]
+INFO:     Stopping reloader process [117048]

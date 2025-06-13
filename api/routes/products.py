@@ -8,6 +8,18 @@ from ..utils.config import config
 
 router = APIRouter(prefix="/api/v1", tags=["products"])
 
+@router.get("/products/all", response_model=List[Product])
+async def get_all_products(
+    current_user: User = Depends(auth_service.get_current_active_user)
+):
+    """Obtiene todos los productos sin paginación"""
+    try:
+        # Obtener todos los productos desde Odoo
+        products = odoo_service.get_products()
+        return products
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error obteniendo productos: {str(e)}")
+
 @router.get("/products", response_model=PaginatedResponse[Product])
 async def get_products(
     page: int = Query(1, ge=1),

@@ -46,13 +46,13 @@ ManusOdoo -roto es una plataforma avanzada de gestión empresarial que integra O
   - Usuario: odoo
   - Contraseña: odoo
 - **FastAPI:**
-  - Generalmente expuesto en 8000 o 8001
+  - Generalmente expuesto en 8000
   - Se comunica con el frontend y el backend Odoo
 - **Frontend:**
   - React 18, Vite, Refine 4.x, Ant Design 5.x
   - Variables en .env:
     - VITE_ODOO_URL=http://localhost:8070
-    - VITE_API_URL=http://localhost:8001
+    - VITE_API_URL=http://localhost:8000
     - VITE_APP_TITLE=ManusOdoo Dashboard
     - VITE_COMPANY_NAME=El Pelotazo
 

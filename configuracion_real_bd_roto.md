@@ -73,7 +73,7 @@
 ## 🚀 BACKEND FASTAPI
 
 ### Configuración:
-- **Puerto**: 8001
+- **Puerto**: 8000
 - **Framework**: FastAPI + Uvicorn
 - **CORS**: Habilitado para todos los orígenes
 - **Autenticación**: JWT con OAuth2
@@ -94,7 +94,7 @@
 
 ### Configuración (.env):
 - **VITE_ODOO_URL**: http://localhost:8070
-- **VITE_API_URL**: http://localhost:8001
+- **VITE_API_URL**: http://localhost:8000
 - **VITE_APP_TITLE**: ManusOdoo Dashboard
 - **VITE_COMPANY_NAME**: El Pelotazo
 
@@ -140,7 +140,7 @@
 
 3. **Estado del Proyecto**: 
    - Docker containers activos
-   - FastAPI corriendo en puerto 8001
+   - FastAPI corriendo en puerto 8000
    - Frontend en desarrollo en puerto 3001
    - Base de datos principal: `manus_odoo-bd`
 
@@ -153,7 +153,7 @@ PGPASSWORD=odoo psql -h localhost -p 5434 -U odoo -d manus_odoo-bd
 # URLs de acceso
 http://localhost:8070/shop    # Tienda Odoo (Docker)
 http://localhost:8080         # Adminer (Docker)
-http://localhost:8001         # FastAPI Backend
+http://localhost:8000         # FastAPI Backend
 http://localhost:3001         # Frontend React
 
 # FastAPI Login

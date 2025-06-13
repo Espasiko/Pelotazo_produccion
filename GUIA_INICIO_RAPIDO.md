@@ -25,8 +25,8 @@ Cuando ejecutes `./start.sh`, tendrás acceso a:
   - Contraseña: odoo
   - Base de datos: postgres
   
-- **🔌 API FastAPI**: http://localhost:8001
-  - Documentación automática: http://localhost:8001/docs
+- **🔌 API FastAPI**: http://localhost:8000
+  - Documentación automática: http://localhost:8000/docs
   
 - **🛠️ Adminer**: http://localhost:8080
   - Interfaz web para gestionar PostgreSQL
@@ -71,7 +71,7 @@ ps aux | grep vite     # Frontend
 ### Verificar conectividad
 ```bash
 curl http://localhost:8070  # Odoo
-curl http://localhost:8001  # API
+curl http://localhost:8000  # API
 curl http://localhost:3001  # Frontend (si está activo)
 ```
 
