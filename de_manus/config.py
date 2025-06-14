@@ -21,7 +21,7 @@ class Config:
     CORS_HEADERS: list = ["*"]
     
     # Configuración de Odoo
-    ODOO_URL: str = os.getenv("ODOO_URL", "http://localhost:8069")
+    ODOO_URL: str = os.getenv("ODOO_URL", "http://manusodoo-roto_odoo_1:8069")
     ODOO_DB: str = os.getenv("ODOO_DB", "manus_odoo-bd")
     ODOO_USERNAME: str = os.getenv("ODOO_USERNAME", "yo@mail.com")
     ODOO_PASSWORD: str = os.getenv("ODOO_PASSWORD", "admin")

@@ -7,22 +7,22 @@ import sys
 
 def start_server():
     """Inicia el servidor en segundo plano"""
-    cmd = ['python3', 'start_server_simple.py']
+    cmd = ['python3', 'run_server.py']
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return process
 
 def test_products_all_endpoint():
     """Prueba el endpoint /api/v1/products/all con autenticación correcta"""
     try:
-        # Autenticación usando las credenciales correctas
+        # Autenticación usando las credenciales estándar
         auth_data = {
             "username": "admin",
-            "password": "admin_password_secure"  # Contraseña correcta del código
+            "password": "admin"  # Credenciales estándar del sistema
         }
         
         print("🔐 Obteniendo token de acceso...")
         auth_response = requests.post(
-            "http://localhost:8001/token", 
+            "http://localhost:8001/api/v1/auth/login", 
             data=auth_data,
             headers={"Content-Type": "application/x-www-form-urlencoded"}
         )

@@ -8,7 +8,7 @@ import json
 
 def start_server():
     """Inicia el servidor en segundo plano"""
-    cmd = ['python3', 'start_server_simple.py']
+    cmd = ['python3', 'run_server.py']
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return process
 

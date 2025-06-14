@@ -16,14 +16,14 @@ from ia_mapeo import analizar_archivo, enriquecer_datos
 from convertidor_proveedores import detectar_proveedor, leer_archivo, generar_product_template
 
 # Configuración
-DIR_EJEMPLOS = "/home/espasiko/manusodoo/last/ejemplos"
-DIR_SALIDA = "/home/espasiko/manusodoo/last/odoo_import"
+DIR_EJEMPLOS = "/home/espasiko/mainmanusodoo/manusodoo-roto/ejemplos"
+DIR_SALIDA = "/home/espasiko/mainmanusodoo/manusodoo-roto/odoo_import"
 
 def mostrar_ayuda():
     print("\nUso: python analizar_proveedor.py [archivo]")
     print("\nSi no se especifica un archivo, se mostrará la lista de archivos disponibles.")
     print("\nEjemplo:")
-    print("  python analizar_proveedor.py /home/espasiko/manusodoo/last/ejemplos/PVP\ BSH.xlsx")
+    print("  python analizar_proveedor.py /home/espasiko/mainmanusodoo/manusodoo-roto/ejemplos/PVP\ BSH.xlsx")
 
 def listar_archivos():
     print("\nArchivos disponibles:")

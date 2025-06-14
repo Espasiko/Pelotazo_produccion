@@ -1,82 +1,61 @@
 #!/usr/bin/env python3
-
 import xmlrpc.client
-import traceback
 
 def test_odoo_connection():
     try:
-        # Configuración de conexión a Odoo
-        url = "http://localhost:8070"
-        db = "manus_odoo-bd"
-        username = "admin"
-        password = "admin"
+        # Configuración de conexión
+        url = 'http://localhost:8070'
+        db = 'manus_odoo-bd'
+        username = 'yo@mail.com'
+        password = 'admin'
         
         print(f"Probando conexión a Odoo en {url}...")
         
-        # Autenticación
+        # Conectar al servicio común
         common = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/common')
-        print("Servidor common creado exitosamente")
         
+        # Obtener información de versión
+        version_info = common.version()
+        print(f"Versión de Odoo: {version_info}")
+        
+        # Autenticar usuario
         uid = common.authenticate(db, username, password, {})
-        print(f"UID obtenido: {uid}")
+        print(f"UID de usuario: {uid}")
         
         if uid:
-            print("✅ Autenticación exitosa")
-            
-            # Conexión al modelo de productos
+            # Conectar al servicio de modelos
             models = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/object')
-            print("Servidor models creado exitosamente")
             
-            # Probar crear una categoría de prueba
-            category_name = "Pruebas"
-            print(f"Buscando categoría '{category_name}'...")
+            # Buscar productos
+            product_ids = models.execute_kw(db, uid, password,
+                'product.template', 'search', [[]])
+            print(f"IDs de productos encontrados: {product_ids[:5]}...")  # Mostrar solo los primeros 5
             
-            category_ids = models.execute_kw(db, uid, password, 'product.category', 'search', 
-                                           [[['name', '=', category_name]]])
-            print(f"Categorías encontradas: {category_ids}")
-            
-            if not category_ids:
-                print("Creando nueva categoría...")
-                category_id = models.execute_kw(db, uid, password, 'product.category', 'create', 
-                                               [{'name': category_name}])
-                print(f"Categoría creada con ID: {category_id}")
+            if product_ids:
+                # Leer datos de productos
+                products = models.execute_kw(db, uid, password,
+                    'product.template', 'read', [product_ids[:3]],
+                    {'fields': ['id', 'name', 'default_code', 'list_price']})
+                
+                print("\nPrimeros 3 productos:")
+                for product in products:
+                    print(f"  ID: {product['id']}, Nombre: {product['name']}, Código: {product.get('default_code', 'N/A')}, Precio: {product.get('list_price', 0)}")
+                
+                return True
             else:
-                category_id = category_ids[0]
-                print(f"Usando categoría existente con ID: {category_id}")
-            
-            # Probar crear producto
-            product_vals = {
-                'name': 'Producto de Prueba Diagnóstico',
-                'default_code': 'TEST-DIAG-001',
-                'categ_id': category_id,
-                'list_price': 99.99,
-                'type': 'consu',  # 'consu' para productos físicos (Goods)
-                'sale_ok': True,
-                'purchase_ok': True,
-            }
-            
-            print("Creando producto en Odoo...")
-            print(f"Datos del producto: {product_vals}")
-            
-            odoo_product_id = models.execute_kw(db, uid, password, 'product.template', 'create', [product_vals])
-            print(f"✅ Producto creado exitosamente con ID: {odoo_product_id}")
-            
-            # Verificar que el producto se creó
-            created_product = models.execute_kw(db, uid, password, 'product.template', 'read', 
-                                              [odoo_product_id], {'fields': ['name', 'default_code', 'list_price']})
-            print(f"Producto verificado: {created_product}")
-            
-            return True
-            
+                print("No se encontraron productos en Odoo")
+                return False
         else:
-            print("❌ Error en la autenticación")
+            print("Error: No se pudo autenticar el usuario")
             return False
             
     except Exception as e:
-        print(f"❌ Error en la conexión con Odoo: {e}")
-        print("Traceback completo:")
-        traceback.print_exc()
+        print(f"Error conectando con Odoo: {e}")
         return False
 
 if __name__ == "__main__":
-    test_odoo_connection()
+    success = test_odoo_connection()
+    if success:
+        print("\n✅ Conexión con Odoo exitosa - hay productos reales disponibles")
+    else:
+        print("\n❌ Conexión con Odoo falló - se usarán productos simulados")

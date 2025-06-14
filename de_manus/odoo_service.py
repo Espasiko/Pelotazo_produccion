@@ -68,33 +68,25 @@ class OdooService:
     
     def get_products(self) -> List[Product]:
         """Obtiene productos desde Odoo"""
-        print("ODOO_SERVICE: Iniciando get_products()")
         try:
             # Buscar productos
-            print("ODOO_SERVICE: Buscando productos...")
             product_ids = self._execute_kw('product.template', 'search', [[]])
-            print(f"ODOO_SERVICE: Productos encontrados: {len(product_ids) if product_ids else 0}")
             
             if not product_ids:
-                print("ODOO_SERVICE: No se encontraron productos, usando fallback")
                 return self._get_fallback_products()
             
             # Obtener datos de productos
-            print("ODOO_SERVICE: Leyendo datos de productos...")
             odoo_products = self._execute_kw(
                 'product.template', 
                 'read', 
                 [product_ids],
                 {'fields': ['id', 'name', 'default_code', 'categ_id', 'list_price', 'qty_available']}
             )
-            print(f"ODOO_SERVICE: Datos obtenidos: {len(odoo_products) if odoo_products else 0} productos")
             
             if not odoo_products:
-                print("ODOO_SERVICE: No se pudieron leer datos, usando fallback")
                 return self._get_fallback_products()
             
             # Transformar a formato esperado
-            print("ODOO_SERVICE: Transformando datos...")
             transformed_products = []
             for p in odoo_products:
                 category_name = self._get_category_name(p.get('categ_id'))
@@ -109,17 +101,12 @@ class OdooService:
                     image_url=f"https://example.com/images/product_{p['id']}.jpg"
                 ))
             
-            print(f"ODOO_SERVICE: ✓ Devolviendo {len(transformed_products)} productos REALES de Odoo")
             return transformed_products
             
         except Exception as e:
-            print(f"ODOO_SERVICE: ✗ Error obteniendo productos: {e}")
-            import traceback
-            print(f"ODOO_SERVICE: Traceback: {traceback.format_exc()}")
-            print("ODOO_SERVICE: Usando datos de fallback")
+            print(f"Error obteniendo productos: {e}")
             return self._get_fallback_products()
         finally:
-            print("ODOO_SERVICE: Limpiando conexión")
             self._cleanup_connection()
     
     def get_product_by_id(self, product_id: int) -> Optional[Product]:

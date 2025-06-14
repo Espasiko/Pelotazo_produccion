@@ -13,8 +13,8 @@ import pandas as pd
 from convertidor_proveedores import procesar_archivo, detectar_proveedor, leer_archivo
 
 # Directorio de trabajo
-DIR_EJEMPLOS = "/home/espasiko/manusodoo/last/ejemplos"
-DIR_SALIDA = "/home/espasiko/manusodoo/last/odoo_import"
+DIR_EJEMPLOS = "/home/espasiko/mainmanusodoo/manusodoo-roto/ejemplos"
+DIR_SALIDA = "/home/espasiko/mainmanusodoo/manusodoo-roto/odoo_import"
 
 def mostrar_info_archivo(ruta_archivo):
     """Muestra información sobre un archivo de proveedor"""

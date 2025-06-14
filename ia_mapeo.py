@@ -18,8 +18,8 @@ from difflib import SequenceMatcher
 from convertidor_proveedores import leer_archivo, detectar_proveedor
 
 # Configuración
-DIR_EJEMPLOS = "/home/espasiko/manusodoo/last/ejemplos"
-DIR_SALIDA = "/home/espasiko/manusodoo/last/odoo_import"
+DIR_EJEMPLOS = "/home/espasiko/mainmanusodoo/manusodoo-roto/ejemplos"
+DIR_SALIDA = "/home/espasiko/mainmanusodoo/manusodoo-roto/odoo_import"
 
 # Patrones comunes en nombres de productos
 PATRONES_PRODUCTO = {

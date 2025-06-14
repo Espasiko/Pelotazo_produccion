@@ -80,7 +80,7 @@ if ! docker ps | grep -q "fastapi"; then
         --network manusodoo-roto_default \
         -p 8000:8000 \
         -v "$(pwd):/app" \
-        -e ODOO_URL="http://odoo:8070" \
+        -e ODOO_URL="http://odoo:8069" \
         -e ODOO_DB="manus_odoo-bd" \
         -e ODOO_USERNAME="yo@mail.com" \
         -e ODOO_PASSWORD="admin" \
@@ -116,7 +116,7 @@ print_status "✅ PostgreSQL está listo"
 print_status "Esperando a que Odoo esté disponible..."
 retries=0
 max_retries=30
-while ! curl -s http://localhost:8070 > /dev/null; do
+while ! curl -s http://localhost:8069 > /dev/null; do
     echo -n "."
     sleep 5
     retries=$((retries + 1))
@@ -198,8 +198,8 @@ echo ""
 print_status "🎉 Sistema iniciado correctamente"
 echo ""
 echo "📋 Servicios disponibles:"
-echo "   🏢 Odoo ERP: http://localhost:8070"
-echo "   🗄️  PostgreSQL: localhost:5434"
+echo "   🏢 Odoo ERP: http://localhost:8069"
+echo "   🗄️  PostgreSQL: localhost:5432"
 echo "   🔌 API FastAPI: http://localhost:8000 (contenedor Docker)"
 echo "   🛠️  Adminer: http://localhost:8080"
 if [ "$1" = "--with-frontend" ]; then

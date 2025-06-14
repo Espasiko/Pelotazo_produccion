@@ -16,9 +16,9 @@ from datetime import datetime
 from convertidor_proveedores import procesar_archivo, detectar_proveedor
 
 # Configuración de directorios
-DIR_EJEMPLOS = "/home/espasiko/manusodoo/last/ejemplos"
-DIR_SALIDA = "/home/espasiko/manusodoo/last/odoo_import"
-DIR_INFORMES = "/home/espasiko/manusodoo/last/informes"
+DIR_EJEMPLOS = "/home/espasiko/mainmanusodoo/manusodoo-roto/ejemplos"
+DIR_SALIDA = "/home/espasiko/mainmanusodoo/manusodoo-roto/odoo_import"
+DIR_INFORMES = "/home/espasiko/mainmanusodoo/manusodoo-roto/informes"
 
 def generar_informe(resultados):
     """Genera un informe detallado del procesamiento por lotes"""

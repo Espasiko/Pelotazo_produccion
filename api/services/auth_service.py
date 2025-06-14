@@ -19,6 +19,13 @@ fake_users_db = {
         "email": "admin@example.com",
         "hashed_password": "admin_password_secure",
         "disabled": False,
+    },
+    "yo@mail.com": {
+        "username": "yo@mail.com",
+        "full_name": "Usuario Odoo",
+        "email": "yo@mail.com",
+        "hashed_password": "admin",
+        "disabled": False,
     }
 }
 

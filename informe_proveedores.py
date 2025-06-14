@@ -17,8 +17,8 @@ from ia_mapeo import analizar_archivo, extraer_atributos, inferir_categoria
 from convertidor_proveedores import detectar_proveedor, leer_archivo
 
 # Configuración
-DIR_EJEMPLOS = "/home/espasiko/manusodoo/last/ejemplos"
-DIR_SALIDA = "/home/espasiko/manusodoo/last/informes"
+DIR_EJEMPLOS = "/home/espasiko/mainmanusodoo/manusodoo-roto/ejemplos"
+DIR_SALIDA = "/home/espasiko/mainmanusodoo/manusodoo-roto/informes"
 
 def calcular_metricas_calidad(df):
     """Calcula métricas de calidad para un DataFrame de productos"""

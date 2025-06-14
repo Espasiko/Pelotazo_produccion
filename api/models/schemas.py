@@ -29,8 +29,8 @@ class Product(BaseModel):
     description: Optional[str] = None
     price: Optional[float] = None  # list_price es opcional en Odoo
     category: Optional[str] = None  # categ_id es opcional
-    stock_quantity: Optional[int] = None
-    sku: Optional[str] = None  # default_code es opcional
+    stock: Optional[int] = None  # qty_available
+    code: Optional[str] = None  # default_code es opcional
     image_url: Optional[str] = None
     is_active: bool = True
 

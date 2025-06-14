@@ -37,7 +37,7 @@ class VerificadorInstalacion:
         """Verifica que la estructura del módulo sea correcta"""
         logger.info("Verificando estructura del módulo...")
         
-        base_path = Path('/home/espasiko/manusodoo/last/addons/custom_electrodomesticos')
+        base_path = Path('/home/espasiko/mainmanusodoo/manusodoo-roto/addons/custom_electrodomesticos')
         
         archivos_requeridos = [
             '__init__.py',
@@ -256,7 +256,7 @@ class VerificadorInstalacion:
         """Verifica que los archivos de ejemplo están disponibles"""
         logger.info("Verificando archivos de ejemplo...")
         
-        directorio_ejemplos = Path('/home/espasiko/manusodoo/last/ejemplos')
+        directorio_ejemplos = Path('/home/espasiko/mainmanusodoo/manusodoo-roto/ejemplos')
         
         if not directorio_ejemplos.exists():
             self.errores.append("Directorio de ejemplos no existe")

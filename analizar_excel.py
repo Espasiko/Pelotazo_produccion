@@ -2,7 +2,7 @@ import pandas as pd
 import os
 
 files = ['PVP JATA.xlsx', 'PVP MIELECTRO.xlsx', 'PVP NEVIR.xlsx', 'PVP ORBEGOZO.xlsx', 'PVP UFESA.xlsx', 'PVP VITROKITCHEN.xlsx']
-base_path = '/home/espasiko/manusodoo/last/ejemplos/'
+base_path = '/home/espasiko/mainmanusodoo/manusodoo-roto/ejemplos/'
 
 for file in files:
     print(f'\n=== {file} ===')

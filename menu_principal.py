@@ -14,7 +14,7 @@ import subprocess
 from datetime import datetime
 
 # Configuración
-DIR_BASE = "/home/espasiko/manusodoo/last"
+DIR_BASE = "/home/espasiko/mainmanusodoo/manusodoo-roto"
 DIR_EJEMPLOS = os.path.join(DIR_BASE, "ejemplos")
 DIR_SALIDA = os.path.join(DIR_BASE, "odoo_import")
 DIR_INFORMES = os.path.join(DIR_BASE, "informes")
