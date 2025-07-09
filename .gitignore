@@ -97,3 +97,4 @@ odoo.conf
 *.zip
 *.7z
 /data_test
+/examples/
