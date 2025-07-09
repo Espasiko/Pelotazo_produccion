@@ -1,22 +1,28 @@
-# Carpetas y archivos a ignorar
+# Carpetas y carpetas a ignorar
+
+# Carpetas con datos que NO deben subirse
+/backups
+/tiendafotos
+/relicaHostingerMCP
+/main_legacy
+/ejemplos
+/plantillasodoo
+/facturas_jsons
 
 # Carpetas del backend y otras especificadas
-backend
-tiendafotos
-custom_addons
-jsons
-main
-plantillasodoo
+/backend
+/custom_addons
+/jsons
+/main
 /mcp-odoo-yourtechtribe
-de_manus
+/de_manus
 
 # Archivos y carpetas comunes de Python
-__pycache__
+__pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
-env/
 build/
 develop-eggs/
 dist/
@@ -28,38 +34,62 @@ lib64/
 parts/
 sdist/
 var/
+wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 
-# Archivos de entorno y configuración local
+# Entornos virtuales
 .env
 .venv
-env/
 venv/
 ENV/
+venv.bak/
+venv-prev/
 
 # Archivos de sistema
 .DS_Store
 Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
 
-# Archivos de IDE y editores
+# Archivos de IDE
 .idea/
 .vscode/
 *.swp
 *.swo
+*~
+.ropeproject
+.project
+.pydevproject
+.settings/
 
-# Carpetas de logs y temporales
-logs/
-tmp/
-temp/
-
-# Otros
-*.bak
+# Logs y archivos temporales
+/logs
 *.log
-*.tar.gz
-*.zip
-node_modules/
-ejemplos/
-.trae/
-backups/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pytest_cache/
+coverage/
+htmlcov/
+/tmp
+/temp
+*.bak
+*.tmp
+
+# Dependencias
+/node_modules
+/bower_components
+/jspm_packages
+
+# Archivos de Odoo
+odoo-bin
+odoo.conf
+*.pot
+*.pyo
+*.pyd
+*.so
+.addons
+*.sublime-*

@@ -1,0 +1,2 @@
+1. NUNCA jamas ejecutes los comandos como docker volume rm o docker-compose down -v SIN mi PERMISO explicito, siempre preguntame y avisame que se van a perder los datos y las configuraciones. 
+2. SIEMPRE USAMOS LA VERSION DE ODOO 18, Y SIEMPRE BUSCAS ONLINE Y EN LOS RECURSOS DISPONIBLES SOLO Y UNICAMENTE INFORMACION DE ODOO 18. 3. siempre antes de eofrecerme alguna solucion buscas templates o fuentes de opensource y evaluas su uso y compatibilidad con el proyecto!
