@@ -93,3 +93,7 @@ odoo.conf
 *.so
 .addons
 *.sublime-*
+/informes/PVP JATA.xlsx
+*.zip
+*.7z
+/data_test
